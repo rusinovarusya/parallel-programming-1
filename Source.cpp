@@ -1,5 +1,6 @@
 #include <iostream>
 #include <vector>
+#include "Matrix.h"
 
 using namespace std; 
 
@@ -11,59 +12,39 @@ int getFirstDigit(int number) {
 	return number / divider;
 }
 
-int** createMatrix(int rows, int columns) {
-	int** matrix = new int*[rows];
-	for (int i = 0; i < rows; ++i) {
-		matrix[i] = new int[columns];
-		for (int j = 0; j < columns; ++j) {
-			matrix[i][j] = 0;
-		}
-	}
-	return matrix;
-}
-
-int** createRandomMatrix(int rows, int columns) {
-	int** matrix = new int*[rows];
-	for (int i = 0; i < rows; ++i) {
-		matrix[i] = new int[columns];
-		for (int j = 0; j < columns; ++j) {
-			matrix[i][j] = rand();
-		}
-	}
-	return matrix;
-}
-
-void printMatrix(int** matrix, int rows, int columns) {
-	cout << "\n";
-	for (int i = 0; i < rows; ++i) {
-		for (int j = 0; j < columns; ++j) {
-			cout << matrix[i][j] << '\t';
-		}
-		cout << "\n";
-	}
-	cout << "\n";
-}
-
-int findFirstNumber_nonparallel(int** matrix, int rows, int columns, int digit) {
-	int result;
-	for (int i = 0; i < rows; ++i) {
-		for (int j = 0; j < columns; ++j) {
-			if (getFirstDigit(matrix[i][j]) == digit) {
-				result = matrix[i][j];
+bool isNumberStartingWithGivenDigit_nonparallel(Matrix matrix, int digit) {
+	for (int i = 0; i < matrix.rowsCount; ++i) {
+		for (int j = 0; j < matrix.columnsCount; ++j) {
+			if (getFirstDigit(matrix.matrix[i][j]) == digit) {
+				return true;
 			}
 		}
 	}
-	return result;
+	return false;
 }
 
-int min_nonparallel(int** matrix, int rows, int columns, int digit) {
-	int min = findFirstNumber_nonparallel(matrix, rows, columns, digit);
-	for (int i = 0; i < rows; ++i) {
-		for (int j = 0; j < columns; ++j) {
-			int firstDigit = getFirstDigit(matrix[i][j]);
+int getFirstNumberStartingWithGivenDigit_nonparallel(Matrix matrix, int digit) {
+	for (int i = 0; i < matrix.rowsCount; ++i) {
+		for (int j = 0; j < matrix.columnsCount; ++j) {
+			if (getFirstDigit(matrix.matrix[i][j]) == digit) {
+				return matrix.matrix[i][j];
+			}
+		}
+	}
+	return matrix.matrix[0][0];
+}
+
+int min_nonparallel(Matrix matrix, int digit) {
+	int min;
+	if (isNumberStartingWithGivenDigit_nonparallel(matrix, digit)) {
+		min = getFirstNumberStartingWithGivenDigit_nonparallel(matrix, digit);
+	}
+	for (int i = 0; i < matrix.rowsCount; ++i) {
+		for (int j = 0; j < matrix.columnsCount; ++j) {
+			int firstDigit = getFirstDigit(matrix.matrix[i][j]);
 			if (firstDigit == digit) {
-				if (matrix[i][j] < min) {
-					min = matrix[i][j];
+				if (matrix.matrix[i][j] < min) {
+					min = matrix.matrix[i][j];
 				}
 			}
 		}
@@ -75,11 +56,10 @@ int main() {
 	const int rowsCount = 4;
 	const int columnsCount = 5;
 
-	int** matrix = createRandomMatrix(rowsCount, columnsCount);
-	printMatrix(matrix, rowsCount, columnsCount);
+	Matrix matrix = createRandomMatrix(rowsCount, columnsCount);
+	printMatrix(matrix);
+	cout << min_nonparallel(matrix, 2) << '\n';
 
-	cout << min_nonparallel(matrix, rowsCount, columnsCount, 1) << '\n';
-	
 	system("pause");
 	return 0;
 }
