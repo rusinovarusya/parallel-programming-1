@@ -12,9 +12,9 @@ int getFirstDigit(int number) {
 	return number / divider;
 }
 
-bool isNumberStartingWithGivenDigit_nonparallel(Matrix matrix, int digit) {
-	for (int i = 0; i < matrix.rowsCount; ++i) {
-		for (int j = 0; j < matrix.columnsCount; ++j) {
+bool isNumberStartingWithGivenDigit(Matrix matrix, size_t start, size_t end, int digit) {
+	for (size_t i = start / matrix.columnsCount; i < end / matrix.columnsCount + 1; ++i) {
+		for (size_t j = start % matrix.columnsCount; j < end % matrix.columnsCount + 1; ++j) {
 			if (getFirstDigit(matrix.matrix[i][j]) == digit) {
 				return true;
 			}
@@ -23,21 +23,20 @@ bool isNumberStartingWithGivenDigit_nonparallel(Matrix matrix, int digit) {
 	return false;
 }
 
-int getFirstNumberStartingWithGivenDigit_nonparallel(Matrix matrix, int digit) {
-	for (int i = 0; i < matrix.rowsCount; ++i) {
-		for (int j = 0; j < matrix.columnsCount; ++j) {
+int getFirstNumberStartingWithGivenDigit(Matrix matrix, size_t start, size_t end, int digit) {
+	for (size_t i = start / matrix.columnsCount; i < end / matrix.columnsCount + 1; ++i) {
+		for (size_t j = start % matrix.columnsCount; j < end % matrix.columnsCount + 1; ++j) {
 			if (getFirstDigit(matrix.matrix[i][j]) == digit) {
 				return matrix.matrix[i][j];
 			}
 		}
 	}
-	return matrix.matrix[0][0];
 }
 
 int min_nonparallel(Matrix matrix, int digit) {
 	int min;
-	if (isNumberStartingWithGivenDigit_nonparallel(matrix, digit)) {
-		min = getFirstNumberStartingWithGivenDigit_nonparallel(matrix, digit);
+	if (isNumberStartingWithGivenDigit(matrix, 0, matrix.rowsCount * matrix.columnsCount - 1, digit)) {
+		min = getFirstNumberStartingWithGivenDigit(matrix, 0, matrix.rowsCount * matrix.columnsCount - 1, digit);
 	}
 	else {
 		throw logic_error("There are not numbers starting with a given digit");
@@ -56,18 +55,20 @@ int min_nonparallel(Matrix matrix, int digit) {
 	return min;
 }
 
+
 int main() {
-	const int rowsCount = 4;
-	const int columnsCount = 5;
+	const size_t rowsCount = 4;
+	const size_t columnsCount = 5;
+	const int firstDigit = 1;
 
 	Matrix matrix = createRandomMatrix(rowsCount, columnsCount);
 	printMatrix(matrix);
-	cout << min_nonparallel(matrix, 2) << '\n';
+	cout << "min number starting with " << firstDigit << " is " << min_nonparallel(matrix, firstDigit) << '\n';
 
 	Matrix matrix2 = createZeroMatrix(rowsCount, columnsCount);
 	printMatrix(matrix2);
 	try {
-		cout << min_nonparallel(matrix2, 2) << '\n';
+		cout << min_nonparallel(matrix2, firstDigit) << '\n';
 	}
 	catch (logic_error& e) {
 		cout << e.what() << '\n';

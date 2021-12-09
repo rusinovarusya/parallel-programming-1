@@ -4,11 +4,11 @@
 using namespace std;
 
 struct Matrix {
-	int rowsCount;
-	int columnsCount;
+	size_t rowsCount;
+	size_t columnsCount;
 	int** matrix;
 };
 
-Matrix createZeroMatrix(int rows, int columns);
-Matrix createRandomMatrix(int rows, int columns);
+Matrix createZeroMatrix(size_t rows, size_t columns);
+Matrix createRandomMatrix(size_t rows, size_t columns);
 void printMatrix(Matrix matrix);
