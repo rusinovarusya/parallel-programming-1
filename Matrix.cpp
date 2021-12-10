@@ -29,12 +29,12 @@ Matrix createRandomMatrix(size_t rows, size_t columns) {
 	return matrix;
 }
 void printMatrix(Matrix matrix) {
-	cout << "\n";
+	std::cout << "\n";
 	for (size_t i = 0; i < matrix.rowsCount; ++i) {
 		for (size_t j = 0; j < matrix.columnsCount; ++j) {
-			cout << matrix.matrix[i][j] << '\t';
+			std::cout << matrix.matrix[i][j] << '\t';
 		}
-		cout << "\n";
+		std::cout << "\n";
 	}
-	cout << "\n";
+	std::cout << "\n";
 }

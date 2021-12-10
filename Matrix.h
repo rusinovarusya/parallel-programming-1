@@ -1,8 +1,6 @@
 #pragma once
 #include <iostream>
 
-using namespace std;
-
 struct Matrix {
 	size_t rowsCount;
 	size_t columnsCount;

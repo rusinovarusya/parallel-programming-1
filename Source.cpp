@@ -1,8 +1,5 @@
 #include <iostream>
-#include <vector>
 #include "Matrix.h"
-
-using namespace std; 
 
 int getFirstDigit(int number) {
 	int divider = 1;
@@ -31,6 +28,7 @@ int getFirstNumberStartingWithGivenDigit(Matrix matrix, size_t start, size_t end
 			}
 		}
 	}
+	return matrix.matrix[0][0];
 }
 
 int min_nonparallel(Matrix matrix, int digit) {
@@ -39,11 +37,11 @@ int min_nonparallel(Matrix matrix, int digit) {
 		min = getFirstNumberStartingWithGivenDigit(matrix, 0, matrix.rowsCount * matrix.columnsCount - 1, digit);
 	}
 	else {
-		throw logic_error("There are not numbers starting with a given digit");
+		throw std::logic_error("There are not numbers starting with a given digit");
 	}
 
-	for (int i = 0; i < matrix.rowsCount; ++i) {
-		for (int j = 0; j < matrix.columnsCount; ++j) {
+	for (size_t i = 0; i < matrix.rowsCount; ++i) {
+		for (size_t j = 0; j < matrix.columnsCount; ++j) {
 			int firstDigit = getFirstDigit(matrix.matrix[i][j]);
 			if (firstDigit == digit) {
 				if (matrix.matrix[i][j] < min) {
@@ -56,22 +54,24 @@ int min_nonparallel(Matrix matrix, int digit) {
 }
 
 
+
 int main() {
-	const size_t rowsCount = 4;
-	const size_t columnsCount = 5;
+	const size_t rowsCount = 11;
+	const size_t columnsCount = 10;
 	const int firstDigit = 1;
 
 	Matrix matrix = createRandomMatrix(rowsCount, columnsCount);
 	printMatrix(matrix);
-	cout << "min number starting with " << firstDigit << " is " << min_nonparallel(matrix, firstDigit) << '\n';
+	std::cout << "1. min number starting with " << firstDigit << " is " << min_nonparallel(matrix, firstDigit) << '\n';
+	
 
 	Matrix matrix2 = createZeroMatrix(rowsCount, columnsCount);
 	printMatrix(matrix2);
 	try {
-		cout << min_nonparallel(matrix2, firstDigit) << '\n';
+		std::cout << min_nonparallel(matrix2, firstDigit) << '\n';
 	}
-	catch (logic_error& e) {
-		cout << e.what() << '\n';
+	catch (std::logic_error& e) {
+		std::cout << e.what() << '\n';
 	}
 
 	system("pause");
